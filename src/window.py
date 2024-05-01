@@ -25,6 +25,26 @@ class Window:
     # terminal image buffer
     _disp_buffer: list[int] = list()
 
+    @property
+    def mode(self):
+        return self._mode
+
+    @property
+    def width(self):
+        return self._width
+
+    @property
+    def height(self):
+        return self._height
+
+    @property
+    def terminal_width(self):
+        return self._terminal_width
+
+    @property
+    def terminal_height(self):
+        return self._terminal_height
+
     @classmethod
     def initialize(cls, mode: Mode):
         """
