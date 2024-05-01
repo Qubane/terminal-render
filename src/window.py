@@ -84,3 +84,8 @@ class Window:
         """
         Updates the image displayed
         """
+
+        # update for BW terminal
+        if cls._mode is Mode.bw:
+            pass
+
