@@ -1,5 +1,6 @@
 import os
 from .types import Mode
+from .palette import Palette
 
 
 # initialize real terminal
@@ -70,11 +71,11 @@ class Window:
 
         # initialize palette
         if cls._mode is Mode.monochrome:
-            cls.palette = [30, 37]
+            cls.palette = Palette.monochrome
         elif cls._mode is Mode.palette4:
-            cls.palette = []  # todo
+            cls.palette = Palette.palette4
         elif cls._mode is Mode.palette8:
-            cls.palette = []  # todo
+            cls.palette = Palette.palette8
         else:  # full color or BW
             cls.palette = []
 
