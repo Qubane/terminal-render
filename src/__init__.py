@@ -1,2 +1,2 @@
-from window import Window
+from .window import Window
 
