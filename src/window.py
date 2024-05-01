@@ -25,6 +25,9 @@ class Window:
     # terminal image buffer
     _disp_buffer: list[int] = list()
 
+    # palette
+    palette: list[int] = list()
+
     @property
     def mode(self):
         return self._mode
@@ -64,6 +67,16 @@ class Window:
 
         # initialize the image buffer
         cls._disp_buffer = [0 for _ in range(cls._width * cls._height)]
+
+        # initialize palette
+        if cls._mode is Mode.monochrome:
+            cls.palette = [30, 37]
+        elif cls._mode is Mode.palette4:
+            cls.palette = []  # todo
+        elif cls._mode is Mode.palette8:
+            cls.palette = []  # todo
+        else:  # full color or BW
+            cls.palette = []
 
     @classmethod
     def update(cls):
