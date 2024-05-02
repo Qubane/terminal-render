@@ -8,9 +8,9 @@ def main():
     count = 0
     while True:
         win.update()
-        win._disp_buffer[count-1] = 0
-        win._disp_buffer[count] = 1
-        count = (count + 1) % 3600
+        for i in range(3600):
+            win._disp_buffer[i] = (i + count + (i // 120)) % 6
+        count += 1
         # sleep(0.0333)  # ~1/30
 
 

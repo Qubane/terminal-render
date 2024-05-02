@@ -99,5 +99,5 @@ class Window:
         if cls._mode is Mode.bw:
             rows = [cls._disp_buffer[i*cls._width:i*cls._width+cls._width] for i in range(cls._height)]
             for row in rows:
-                output += ''.join(map(lambda x: '\33[30m ' if x == 0 else '\33[37m#', row))
+                output += ''.join(map(lambda x: ' ' if x == 0 else '#', row))
             print(output, end='', flush=True)
