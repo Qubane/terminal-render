@@ -1,4 +1,5 @@
 import os
+from copy import copy
 from .types import Mode
 from .palette import Palette
 
@@ -71,13 +72,19 @@ class Window:
 
         # initialize palette
         if cls._mode is Mode.monochrome:
-            cls.palette = Palette.monochrome
+            cls.palette = copy(Palette.monochrome)
         elif cls._mode is Mode.palette4:
-            cls.palette = Palette.palette4
+            cls.palette = copy(Palette.palette4)
         elif cls._mode is Mode.palette8:
-            cls.palette = Palette.palette8
+            cls.palette = copy(Palette.palette8)
         else:  # full color or BW
             cls.palette = []
+
+        # clear the terminal
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+        # make cursor invisible
+        print('\33[?25l', end='', flush=True)
 
     @classmethod
     def update(cls):
@@ -85,7 +92,12 @@ class Window:
         Updates the image displayed
         """
 
+        # printed string
+        output = '\33[H'
+
         # update for BW terminal
         if cls._mode is Mode.bw:
-            pass
-
+            rows = [cls._disp_buffer[i*cls._width:i*cls._width+cls._width] for i in range(cls._height)]
+            for row in rows:
+                output += ''.join(map(lambda x: '\33[30m ' if x == 0 else '\33[37m#', row))
+            print(output, end='', flush=True)
