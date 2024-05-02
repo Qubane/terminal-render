@@ -87,6 +87,15 @@ class Window:
         print('\33[?25l', end='', flush=True)
 
     @classmethod
+    def clear(cls):
+        """
+        Clears internal image buffer
+        """
+
+        # easiest way is just to remake one
+        cls._disp_buffer = [0 for _ in range(cls._width * cls._height)]
+
+    @classmethod
     def update(cls):
         """
         Updates the image displayed
