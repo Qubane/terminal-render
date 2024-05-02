@@ -50,6 +50,10 @@ class Window:
     def terminal_height(self):
         return self._terminal_height
 
+    @property
+    def buffer(self):
+        return self._disp_buffer
+
     @classmethod
     def initialize(cls, mode: Mode):
         """
