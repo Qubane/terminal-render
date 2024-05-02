@@ -14,7 +14,7 @@ def main():
         for i in range(win.width):
             val = (math.sin(i / 20 + (count / 10)) + 1) / 2
             y = int(val * win.height)
-            win._disp_buffer[y * win.width + i] = 1
+            win.plot(i, y)
         count += 1
         sleep(0.0333)  # ~1/30
 
