@@ -87,6 +87,32 @@ class Window:
         print('\33[?25l', end='', flush=True)
 
     @classmethod
+    def plot(cls, x: int, y: int, val: int = 1):
+        """
+        Plots a value at given X and Y coord. Checks bounds.
+        :param x: integer
+        :param y: integer
+        :param val: integer
+        """
+
+        if 0 < x < cls._width and 0 < y < cls._height:
+            cls._disp_buffer[x + y * cls._width] = val
+
+    @classmethod
+    def copy_buffer(cls, buf: list[int]):
+        """
+        Copies given buffer into internal one. Size of buffer must equal to `width * height` (virtual width and height)
+        :param buf: list of pixels, represented by integers. Order: left -> right; top -> bottom
+        :raises IndexError: when buffer length is incorrect
+        """
+
+        # check buffer lengths
+        if len(buf) != cls._width * cls._height:
+            raise IndexError("Incorrect buffer length")
+
+        cls._disp_buffer = copy(buf)
+
+    @classmethod
     def clear(cls):
         """
         Clears internal image buffer
