@@ -1,7 +1,7 @@
-from enum import IntEnum, auto
+from enum import Flag, auto
 
 
-class Mode(IntEnum):
+class Mode(Flag):
     """
     Mode enum class
     """

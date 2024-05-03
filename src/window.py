@@ -28,7 +28,7 @@ class Window:
     _disp_buffer: list[int] = list()
 
     # palette
-    palette: list[int] = list()
+    palette: list[str] = list()
 
     @property
     def mode(self):
@@ -64,7 +64,7 @@ class Window:
         cls._mode = mode
 
         # any kind of color mode cannot work with high_res flag
-        if not mode & Mode.bw and mode & Mode.high_res:
+        if (not mode & Mode.bw) and mode & Mode.high_res:
             raise NotImplementedError("Unable to have color with high_res flag enabled")
 
         # update virtual width and height
@@ -156,7 +156,10 @@ class Window:
 
         # update for any colored mode
         else:
-            rows = [cls._disp_buffer[i:i+cls._width] for i in range(0, cls._height*cls._width, cls._width)]
-            for row in rows:
-                output += ''.join(map(lambda x: ' ' if x == 0 else '#', row))
+            prev_val = -1
+            for val in cls._disp_buffer:
+                if val != prev_val:
+                    output += cls.palette[val] + '#'
+                else:
+                    output += "#"
         print(output, end='', flush=True)
