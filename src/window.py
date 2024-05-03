@@ -158,6 +158,7 @@ class Window:
         elif cls._mode & (Mode.monochrome | Mode.palette4 | Mode.palette8):
             prev_val = -1
             for val in cls._disp_buffer:
+                val = val % len(cls.palette)
                 if val == 0:
                     output += ' '
                 elif val != prev_val:
