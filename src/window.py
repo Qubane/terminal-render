@@ -137,7 +137,7 @@ class Window:
         # update for BW terminal
         if cls._mode & Mode.bw:
             if not cls._mode & Mode.high_res:
-                rows = [cls._disp_buffer[i*cls._width:i*cls._width+cls._width] for i in range(cls._height)]
+                rows = [cls._disp_buffer[i:i+cls._width] for i in range(0, cls._height*cls._width, cls._width)]
                 for row in rows:
                     output += ''.join(map(lambda x: ' ' if x == 0 else '#', row))
             else:
