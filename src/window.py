@@ -141,27 +141,18 @@ class Window:
                 for row in rows:
                     output += ''.join(map(lambda x: ' ' if x == 0 else '#', row))
             else:
-                p = lambda x: cls._disp_buffer[x]
                 for yo in range(0, cls._height, 4):
                     for xo in range(0, cls._width, 2):
                         # calculate index
                         idx = xo + yo * cls._width
 
-                        # first row
-                        braille = p(idx)
-                        braille += p(idx + 1) << 3
-
-                        # second row
-                        braille += p(idx + cls._width) << 1
-                        braille += p(idx + 1 + cls._width) << 4
-
-                        # third row
-                        braille += p(idx + cls._width * 2) << 2
-                        braille += p(idx + 1 + cls._width * 2) << 5
-
-                        # forth row
-                        braille += p(idx + cls._width * 3) << 6
-                        braille += p(idx + 1 + cls._width * 3) << 7
+                        # decode the braille character
+                        braille = (
+                            (cls._disp_buffer[idx])+(cls._disp_buffer[idx+1] << 3) +
+                            (cls._disp_buffer[idx+cls._width] << 1)+(cls._disp_buffer[idx+1+cls._width] << 4) +
+                            (cls._disp_buffer[idx+cls._width*2] << 2)+(cls._disp_buffer[idx+1+cls._width*2] << 5) +
+                            (cls._disp_buffer[idx+cls._width*3] << 6)+(cls._disp_buffer[idx+1+cls._width*3] << 7)
+                        )
 
                         output += chr(braille + 0x2800)
             print(output, end='', flush=True)
