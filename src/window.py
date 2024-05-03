@@ -160,6 +160,7 @@ class Window:
             for val in cls._disp_buffer:
                 if val != prev_val:
                     output += cls.palette[val] + '#'
+                    prev_val = val
                 else:
                     output += "#"
         print(output, end='', flush=True)
