@@ -154,13 +154,30 @@ class Window:
 
                         output += chr(braille + 0x2800)
 
-        # update for any colored mode
-        else:
+        # update for monochrome, palette4 and palette8
+        elif cls._mode & (Mode.monochrome | Mode.palette4 | Mode.palette8):
             prev_val = -1
             for val in cls._disp_buffer:
-                if val != prev_val:
+                if val == 0:
+                    output += ' '
+                elif val != prev_val:
                     output += cls.palette[val] + '#'
                     prev_val = val
                 else:
                     output += "#"
+
+        # update for RGB mode (very slow)
+        else:
+            prev_val = -1
+            for val in cls._disp_buffer:
+                if val == 0:
+                    output += ' '
+                elif val != prev_val:
+                    red = val >> 16
+                    green = (val >> 8) & 0xff
+                    blue = val & 0xff
+                    output += f'\33[38;2;{red};{green};{blue}m#'
+                    prev_val = val
+                else:
+                    output += '#'
         print(output, end='', flush=True)
