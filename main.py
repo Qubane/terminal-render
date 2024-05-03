@@ -5,8 +5,8 @@ from time import sleep
 
 def main():
     win = Window()
-    win.initialize(Mode.bw | Mode.high_res)
-    # win.initialize(Mode.bw)
+    # win.initialize(Mode.bw | Mode.high_res)
+    win.initialize(Mode.bw)
 
     count = 0
     while True:

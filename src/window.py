@@ -137,9 +137,7 @@ class Window:
         # update for BW terminal
         if cls._mode & Mode.bw:
             if not cls._mode & Mode.high_res:
-                rows = [cls._disp_buffer[i:i+cls._width] for i in range(0, cls._height*cls._width, cls._width)]
-                for row in rows:
-                    output += ''.join(map(lambda x: ' ' if x == 0 else '#', row))
+                output += ''.join(map(lambda x: ' ' if x == 0 else '#', cls._disp_buffer))
             else:
                 for yo in range(0, cls._height, 4):
                     for xo in range(0, cls._width, 2):
@@ -155,4 +153,10 @@ class Window:
                         )
 
                         output += chr(braille + 0x2800)
-            print(output, end='', flush=True)
+
+        # update for any colored mode
+        else:
+            rows = [cls._disp_buffer[i:i+cls._width] for i in range(0, cls._height*cls._width, cls._width)]
+            for row in rows:
+                output += ''.join(map(lambda x: ' ' if x == 0 else '#', row))
+        print(output, end='', flush=True)
