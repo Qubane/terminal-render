@@ -1,3 +1,3 @@
 from .window import Window
-from .types import *
+from .types import Mode
 
