@@ -137,7 +137,7 @@ class Window:
         # update for BW terminal
         if cls._mode & Mode.bw:
             if not cls._mode & Mode.high_res:
-                output += ''.join(map(lambda x: ' ' if x == 0 else '#', cls._disp_buffer))
+                output += ''.join(map(lambda x: ' ' if x == 0 else '█', cls._disp_buffer))
             else:
                 for yo in range(0, cls._height, 4):
                     for xo in range(0, cls._width, 2):
@@ -162,10 +162,10 @@ class Window:
                 if val == 0:
                     output += ' '
                 elif val != prev_val:
-                    output += cls.palette[val] + '#'
+                    output += cls.palette[val] + '█'
                     prev_val = val
                 else:
-                    output += "#"
+                    output += "█"
 
         # update for RGB mode (very slow)
         else:
@@ -177,8 +177,8 @@ class Window:
                     red = val >> 16
                     green = (val >> 8) & 0xff
                     blue = val & 0xff
-                    output += f'\33[38;2;{red};{green};{blue}m#'
+                    output += f'\33[38;2;{red};{green};{blue}m█'
                     prev_val = val
                 else:
-                    output += '#'
+                    output += '█'
         print(output, end='', flush=True)
