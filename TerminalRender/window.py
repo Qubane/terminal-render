@@ -28,7 +28,7 @@ class Window:
     _disp_buffer: list[int] = list()
 
     # palette
-    palette: list[int] = list()
+    palette: list[str] = list()
 
     @property
     def mode(self):
@@ -64,7 +64,7 @@ class Window:
         cls._mode = mode
 
         # any kind of color mode cannot work with high_res flag
-        if not mode & Mode.bw and mode & Mode.high_res:
+        if (not mode & Mode.bw) and mode & Mode.high_res:
             raise NotImplementedError("Unable to have color with high_res flag enabled")
 
         # update virtual width and height
@@ -137,31 +137,48 @@ class Window:
         # update for BW terminal
         if cls._mode & Mode.bw:
             if not cls._mode & Mode.high_res:
-                rows = [cls._disp_buffer[i*cls._width:i*cls._width+cls._width] for i in range(cls._height)]
-                for row in rows:
-                    output += ''.join(map(lambda x: ' ' if x == 0 else '#', row))
+                output += ''.join(map(lambda x: ' ' if x == 0 else '#', cls._disp_buffer))
             else:
-                p = lambda x: cls._disp_buffer[x]
                 for yo in range(0, cls._height, 4):
                     for xo in range(0, cls._width, 2):
                         # calculate index
                         idx = xo + yo * cls._width
 
-                        # first row
-                        braille = p(idx)
-                        braille += p(idx + 1) << 3
-
-                        # second row
-                        braille += p(idx + cls._width) << 1
-                        braille += p(idx + 1 + cls._width) << 4
-
-                        # third row
-                        braille += p(idx + cls._width * 2) << 2
-                        braille += p(idx + 1 + cls._width * 2) << 5
-
-                        # forth row
-                        braille += p(idx + cls._width * 3) << 6
-                        braille += p(idx + 1 + cls._width * 3) << 7
+                        # decode the braille character
+                        braille = (
+                            (cls._disp_buffer[idx])+(cls._disp_buffer[idx+1] << 3) +
+                            (cls._disp_buffer[idx+cls._width] << 1)+(cls._disp_buffer[idx+1+cls._width] << 4) +
+                            (cls._disp_buffer[idx+cls._width*2] << 2)+(cls._disp_buffer[idx+1+cls._width*2] << 5) +
+                            (cls._disp_buffer[idx+cls._width*3] << 6)+(cls._disp_buffer[idx+1+cls._width*3] << 7)
+                        )
 
                         output += chr(braille + 0x2800)
-            print(output, end='', flush=True)
+
+        # update for monochrome, palette4 and palette8
+        elif cls._mode & (Mode.monochrome | Mode.palette4 | Mode.palette8):
+            prev_val = -1
+            for val in cls._disp_buffer:
+                val = val % len(cls.palette)
+                if val == 0:
+                    output += ' '
+                elif val != prev_val:
+                    output += cls.palette[val] + '#'
+                    prev_val = val
+                else:
+                    output += "#"
+
+        # update for RGB mode (very slow)
+        else:
+            prev_val = -1
+            for val in cls._disp_buffer:
+                if val == 0:
+                    output += ' '
+                elif val != prev_val:
+                    red = val >> 16
+                    green = (val >> 8) & 0xff
+                    blue = val & 0xff
+                    output += f'\33[38;2;{red};{green};{blue}m#'
+                    prev_val = val
+                else:
+                    output += '#'
+        print(output, end='', flush=True)

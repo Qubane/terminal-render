@@ -3,12 +3,12 @@ class Palette:
     ANSI escape codes for colors
     """
 
-    monochrome: list[int] = [
+    monochrome: list[str] = [
         '\33[30m',      # black
         '\33[37m'       # white
     ]
 
-    palette4: list[int] = [
+    palette4: list[str] = [
         '\33[30m',      # black
         '\33[90m',      # bright black
         '\33[31m',      # red
@@ -27,6 +27,6 @@ class Palette:
         '\33[97m'       # bright white
     ]
 
-    palette8: list[int] = [
+    palette8: list[str] = [
         f'\33[38;5;{i}m' for i in range(256)
     ]
