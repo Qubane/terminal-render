@@ -1,5 +1,5 @@
 import math
-from src import *
+from terminal_render import *
 from time import sleep
 
 
