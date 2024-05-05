@@ -1,6 +1,6 @@
 import math
 from time import sleep
-from TerminalRender import *
+from termrender import *
 
 
 def main():
