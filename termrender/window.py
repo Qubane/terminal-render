@@ -17,8 +17,14 @@ class Window:
     _mode: Mode | None = None
 
     # real terminal width and height
-    _terminal_width: int = os.get_terminal_size().columns
-    _terminal_height: int = os.get_terminal_size().lines
+    try:
+        _terminal_width: int = os.get_terminal_size().columns
+        _terminal_height: int = os.get_terminal_size().lines
+
+    # if for some reason handle error occurs, assume the terminal is 120x30
+    except OSError:
+        _terminal_width: int = 120
+        _terminal_height: int = 30
 
     # virtual terminal resolution (will equal to real one if high_res flag is not set)
     _width: int = _terminal_width
